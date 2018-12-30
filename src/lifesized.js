@@ -8,6 +8,8 @@ var electron = require('electron'),
     path = require('path'),
     os = require('os');
 
+var fs = require('fs');
+
 var lifesized = {
 
     /**
@@ -48,21 +50,18 @@ function getBrowserWindowDisplay(){
  * Get a screens PPI
  */
 function getPPI(display){
-    const COMMAND = path.resolve(__dirname, "../build/lifesized-cli/Build/Products/Debug/lifesized-cli") + " " + display.id;
-    //console.log(COMMAND);
-    // exec( COMMAND, (err, stdout, stderr) => {
-    //     debugger;
-    // });
 
-    // If on a mac use our native binary to do the work, otherwise fall back
-    // to a default
+    let appPath = electron.remote.app.getAppPath();
+    let unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
+    if (fs.existsSync(unpackedPath)) {
+      appPath = unpackedPath;
+    }
+
+    let command = appPath + "/node_modules/lifesized/build/lifesized-cli/Build/Products/Debug/lifesized-cli") + " " + display.id;
+
     if(os.platform() === "darwin"){
         try {
-            return  parseFloat(
-                        execSync(
-                            COMMAND
-                        )
-                    );
+            return parseFloat(execSync(command));
         } catch (err) {
             console.error(err);
             return 72.0;
