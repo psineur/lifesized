@@ -57,7 +57,7 @@ function getPPI(display){
       appPath = unpackedPath;
     }
 
-    let command = appPath + "/node_modules/lifesized/build/lifesized-cli/Build/Products/Debug/lifesized-cli") + " " + display.id;
+    let command = appPath + "/node_modules/lifesized/build/lifesized-cli/Build/Products/Debug/lifesized-cli" + " " + display.id;
 
     if(os.platform() === "darwin"){
         try {
